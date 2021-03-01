@@ -19,21 +19,27 @@ const App = () => {
       { (initialState.mylist && initialState.mylist.length) && (
         <Categories title='Mi lista'>
           <Carousel>
-            <CarouselItem />
+            { initialState.mylist.map((item) => (
+              <CarouselItem item={item} />
+            ))}
           </Carousel>
         </Categories>
       )}
       { (initialState.originals && initialState.originals.length) && (
         <Categories title='Originales'>
           <Carousel>
-            <CarouselItem />
+            { initialState.originals.map((item) => (
+              <CarouselItem key={item.id} {...item} />
+            ))}
           </Carousel>
         </Categories>
       )}
       { (initialState.trends && initialState.trends.length) && (
         <Categories title='Tendencias'>
           <Carousel>
-            <CarouselItem />
+            { initialState.trends.map((item) => (
+              <CarouselItem key={item} {...item} />
+            ))}
           </Carousel>
         </Categories>
       )}
