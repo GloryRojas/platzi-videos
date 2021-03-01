@@ -1,40 +1,41 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Search from '../components/Search';
 import Categories from '../components/Categories';
 import Carousel from '../components/Carousel';
 import CarouselItem from '../components/CarouselItem';
-import useInitialState from '../hooks/useInitialState';
 
-const API = 'http://localhost:3000/initialState';
-
-const Home = () => {
-  const initialState = useInitialState(API);
+const Home = ({ myList, trends, originals }) => {
 
   return (
     <div className='app'>
       <Search />
-      { (initialState.mylist && initialState.mylist.length) && (
+      { (myList.length) && (
         <Categories title='Mi lista'>
           <Carousel>
-            { initialState.mylist.map((item) => (
-              <CarouselItem item={item} />
+            { myList.map((item) => (
+              <CarouselItem
+                key={item.id}
+                {...item}
+                isList
+              />
             ))}
           </Carousel>
         </Categories>
       )}
-      { (initialState.originals && initialState.originals.length) && (
+      { (originals.length) && (
         <Categories title='Originales'>
           <Carousel>
-            { initialState.originals.map((item) => (
+            { originals.map((item) => (
               <CarouselItem key={item.id} {...item} />
             ))}
           </Carousel>
         </Categories>
       )}
-      { (initialState.trends && initialState.trends.length) && (
+      { (trends.length) && (
         <Categories title='Tendencias'>
           <Carousel>
-            { initialState.trends.map((item) => (
+            { trends.map((item) => (
               <CarouselItem key={item.id} {...item} />
             ))}
           </Carousel>
@@ -44,4 +45,12 @@ const Home = () => {
   );
 };
 
-export default Home;
+const mapStateToProps = (state) => {
+  return {
+    myList: state.myList,
+    trends: state.trends,
+    originals: state.originals,
+  };
+};
+
+export default connect(mapStateToProps, null)(Home);
