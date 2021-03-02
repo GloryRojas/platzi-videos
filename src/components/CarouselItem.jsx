@@ -1,14 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import '../assets/styles/components/_carouselItem.scss';
 import playIcon from '../assets/static/play-icon.png';
 import plusIcon from '../assets/static/plus-icon.png';
 import removeIcon from '../assets/static/remove-icon.png';
-import { setFavorite, deleteFavorite } from '../actions';
+import { setFavorite, deleteFavorite, playVideo } from '../actions';
 
 const CarouselItem = (props) => {
-  const { title, year, contentRating, duration, cover, id, isList } = props;
+  const { title, year, contentRating, duration, cover, id, isList, source } = props;
 
   const handleSetFavorite = () => {
     props.setFavorite({ title, year, contentRating, duration, cover, id });
@@ -16,6 +17,10 @@ const CarouselItem = (props) => {
 
   const handleDeleteFavorite = () => {
     props.deleteFavorite(id);
+  };
+
+  const handleVideo = () => {
+    props.playVideo({ title, year, contentRating, duration, cover, id, source });
   };
 
   return (
@@ -27,7 +32,13 @@ const CarouselItem = (props) => {
       />
       <div className='carousel-item__details'>
         <div>
-          <img className='carousel-item__details--img' src={playIcon} alt='Play Icon' />
+          <Link to={`/player/${id}`}>
+            <img
+              className='carousel-item__details--img'
+              src={playIcon}
+              alt='Play Icon'
+            />
+          </Link>
           {isList ? (
             <img
               className='carousel-item__details--img'
@@ -79,6 +90,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   setFavorite,
   deleteFavorite,
+  playVideo,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CarouselItem);
